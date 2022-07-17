@@ -4,6 +4,7 @@ import {
   addInitialRanking,
   checkConfirmations,
   confirmRankChangeInDb,
+  finishRankChange,
   getRankingFromDb,
   startRankChange,
 } from "./interface.js";
@@ -40,10 +41,12 @@ export const confirmRankChange = async (from, target) => {
         const confirmations = await checkConfirmations(target);
 
         if (confirmations > confirmThreshold) {
-          finishRankChange(target);
+          await finishRankChange(target);
+          const ranking = await getRankingFromDb(target);
           resolve(
             from.username +
-              " hat den Rangwechsel bestätigt. Es sind genug Stimmen eingelangt."
+              " hat den Rangwechsel bestätigt. Es sind genug Stimmen eingelangt. Neuer Rang: " +
+              ranking.name
           );
         }
         resolve(from.username + " hat den Rangwechsel bestätigt.");

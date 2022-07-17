@@ -7,37 +7,47 @@ import {
 } from "./commander.js";
 
 const showOptions = async () => {
-  return routes.map((x) => x.path).join("\n");
+  return routes
+    .filter((x) => x.visible)
+    .map((x) => x.path)
+    .join("\n");
 };
 
 export const routes = [
   {
     path: "/start",
     method: showOptions,
+    visible: true,
   },
   {
     path: "/help",
     method: showOptions,
+    visible: true,
   },
   {
     path: "/regeln",
     method: showRules,
+    visible: true,
   },
   {
     path: "/rang",
     method: getRanking,
+    visible: true,
   },
   {
     path: "/degradieren",
     method: degradeRanking,
+    visible: true,
   },
   {
     path: "/befördern",
     method: increaseRanking,
+    visible: true,
   },
   {
     path: "/confirm",
     method: confirmRankChange,
+    visible: false,
   },
 ];
 
@@ -53,15 +63,20 @@ export const randomDefaultResponse =
 
 export const rules = "Regeln:\n\nSo laft der Spaß";
 
-export const confirmThreshold = 0;
+export const confirmThreshold = 1;
 
 //todo
 export const seedRanks = [
-  "König",
-  "Vize",
-  "Brigadier",
-  "Major",
-  "Leutnant",
-  "Mannschaftsleutnant",
-  "Mannschaftskapitän",
+  {
+    name: "Kommandant",
+    order: 0,
+  },
+  {
+    name: "General",
+    order: 1,
+  },
+  {
+    name: "Major",
+    order: 2,
+  },
 ];
